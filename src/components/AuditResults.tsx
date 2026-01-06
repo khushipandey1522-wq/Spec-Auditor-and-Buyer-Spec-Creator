@@ -159,7 +159,7 @@ export default function AuditResults({
       <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-6 mb-8">
         <h3 className="text-lg font-semibold text-blue-900 mb-3">Next Step</h3>
         <p className="text-blue-800 mb-4">
-          Proceed to Stage 2 to extract buyer ISQs from competitor websites
+          Proceed to Stage 2 to extract buyer specifications from Sellers websites
         </p>
         <button
           onClick={onProceedToStage2}
