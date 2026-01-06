@@ -91,18 +91,62 @@ An object containing a specifications array.
 }
 ```
 
+## Format 4: MCAT with Type-Based Specifications
+
+This format uses type fields to categorize specifications (Config, Key, Regular).
+
+```json
+{
+  "MCAT_ID": "20456",
+  "MCAT_Name": "Steel Sheets",
+  "Specifications": [
+    {
+      "name": "Material Grade",
+      "type": "Config",
+      "options": ["Mild Steel", "SS304", "SS316", "Galvanized"]
+    },
+    {
+      "name": "Surface Finish",
+      "type": "Config",
+      "options": ["Hot Rolled", "Cold Rolled", "Galvanized", "Polished"]
+    },
+    {
+      "name": "Thickness",
+      "type": "Config",
+      "options": ["0.5 mm", "1 mm", "2 mm", "3 mm", "5 mm"]
+    },
+    {
+      "name": "Form",
+      "type": "Key",
+      "options": ["Sheet", "Coil", "Strip", "Cut To Length"]
+    },
+    {
+      "name": "Brand",
+      "type": "Regular",
+      "options": ["TATA", "JSW", "Sail", "Jindal"]
+    }
+  ]
+}
+```
+
+**Type Mapping**:
+- `Config` → Primary specifications
+- `Key` → Secondary specifications
+- `Regular` → Tertiary specifications
+
 ## Important Notes
 
-1. **MCAT Name Validation**: If your JSON contains a `category_name` field, it must match the MCAT name you enter in the form.
+1. **MCAT Name Validation**: If your JSON contains a `category_name` or `MCAT_Name` field, it must match the MCAT name you enter in the form.
 
 2. **Required Fields**:
-   - `spec_name`: The name of the specification (required)
+   - `spec_name` or `name`: The name of the specification (required)
    - `options`: An array of option values (required)
 
 3. **Optional Fields**:
-   - `input_type`: Either "radio_button" or "multi_select"
-   - `tier`: Either "Primary", "Secondary", or "Tertiary"
-   - `mcat_id`: Category ID (optional)
+   - `input_type`: Either "radio_button" or "multi_select" (defaults to "radio_button")
+   - `tier`: Either "Primary", "Secondary", or "Tertiary" (for Formats 1-3)
+   - `type`: Either "Config", "Key", or "Regular" (for Format 4)
+   - `mcat_id` or `MCAT_ID`: Category ID (optional)
 
 4. **Common Issues to Avoid**:
    - Duplicate options (e.g., "1500 mm" appearing twice)

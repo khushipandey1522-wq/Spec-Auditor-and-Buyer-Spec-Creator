@@ -31,6 +31,8 @@ export default function AuditInput({ onSubmit, loading = false }: AuditInputProp
           count += parsed.finalized_specs.finalized_primary_specs?.specs?.length || 0;
           count += parsed.finalized_specs.finalized_secondary_specs?.specs?.length || 0;
           count += parsed.finalized_specs.finalized_tertiary_specs?.specs?.length || 0;
+        } else if (parsed.Specifications && Array.isArray(parsed.Specifications)) {
+          count = parsed.Specifications.length;
         } else if (Array.isArray(parsed)) {
           count = parsed.length;
         } else if (parsed.specifications) {
@@ -104,15 +106,33 @@ export default function AuditInput({ onSubmit, loading = false }: AuditInputProp
           );
         }
       }
+    } else if (jsonData.MCAT_Name && jsonData.Specifications) {
+      const typeToTierMap: Record<string, "Primary" | "Secondary" | "Tertiary"> = {
+        "Config": "Primary",
+        "Key": "Secondary",
+        "Regular": "Tertiary"
+      };
+
+      specifications = jsonData.Specifications.map((s: any) => ({
+        spec_name: s.name,
+        options: s.options || [],
+        input_type: "radio_button",
+        tier: typeToTierMap[s.type] || "Tertiary",
+      }));
     } else if (Array.isArray(jsonData)) {
       specifications = jsonData.map((s: any) => ({
         spec_name: s.spec_name || s.name || "",
         options: s.options || [],
-        input_type: s.input_type,
+        input_type: s.input_type || "radio_button",
         tier: s.tier,
       }));
     } else if (jsonData.specifications) {
-      specifications = jsonData.specifications;
+      specifications = jsonData.specifications.map((s: any) => ({
+        spec_name: s.spec_name || s.name || "",
+        options: s.options || [],
+        input_type: s.input_type || "radio_button",
+        tier: s.tier,
+      }));
     }
 
     if (specifications.length === 0) {
